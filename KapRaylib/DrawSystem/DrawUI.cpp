@@ -6,7 +6,7 @@
 */
 
 #include "DrawUI.hpp"
-#include "Encapsulation/RaylibEncapsulation.hpp"
+#include "KapRaylib/Encapsulation/RaylibEncapsulation.hpp"
 
 #if KAPRAYLIB_2D_ACTIVE
 
