@@ -21,7 +21,7 @@ namespace KapEngine {
 
             namespace Draw {
                 #if KAPRAYLIB_2D_ACTIVE
-                    class DrawUI;
+                    class RaylibDrawing;
                 #endif
                 #if KAPRAYLIB_3D_ACTIVE
                     #if KAPRAYLIB_BETA

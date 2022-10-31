@@ -120,6 +120,48 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
         return getImage(imagePath, true);
     }
 
+    void KapEngine::Graphical::Raylib::RaylibEncapsulation::drawRectangle(float posX, float posY, float width, float heigth, Color color)
+    {
+        auto sprite = std::make_shared<Draw::DrawSpriteColor>(*this, posX, posY, width, heigth, color);
+        _drawUi.push_back(sprite);
+    }
+
+    void KapEngine::Graphical::Raylib::RaylibEncapsulation::drawText(std::string const &fontPath, std::string const &text, Vector2 pos, float fontSize, float spacing, Color col)
+    {
+        auto txt = std::make_shared<Draw::DrawText>(*this);
+        txt->setColor(col);
+        txt->setPos(pos);
+        txt->setSize(fontSize);
+        txt->setSpacing(spacing);
+        txt->setText(text);
+        if (fontPath != "")
+        {
+            try
+            {
+                txt->setFont(getFont(fontPath));
+            }
+            catch (...)
+            {
+            }
+        }
+        _drawUi.push_back(txt);
+    }
+
+    void KapEngine::Graphical::Raylib::RaylibEncapsulation::drawTexture(std::string const &path, float posX, float posY, float width, float heigth, float rot, Rectangle rect,
+                                    Color col)
+    {
+        auto texture = std::make_shared<Draw::DrawSpriteTexture>(*this);
+        texture->setPathTexture(path);
+        texture->setHeigth(heigth);
+        texture->setWidth(width);
+        texture->setPosX(posX);
+        texture->setPosY(posY);
+        texture->setColor(col);
+        texture->setRectangle(rect);
+        texture->setRot(rot);
+        _drawUi.push_back(texture);
+    }
+
 #endif
 
 #if KAPRAYLIB_SOUND_ACTIVE
@@ -219,3 +261,44 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
     }
 
 #endif
+
+void KapEngine::Graphical::Raylib::RaylibEncapsulation::stopDrawing() {
+    if (_firstRun)
+    {
+        _firstRun = false;
+        return;
+    }
+    if (!opened)
+        return;
+    canDraw = false;
+    if (camSet)
+    {
+        #if KAPRAYLIB_3D_ACTIVE
+            #if KAPRAYLIB_BETA
+            BeginMode3D(_camera);
+            // draw 3D elements
+            EndMode3D();
+            #endif
+        #endif
+        #if KAPRAYLIB_2D_ACTIVE
+            for (std::size_t i = 0; i < _drawUi.size(); i++)
+            {
+                _drawUi[i]->draw();
+                _drawUi[i]->clear();
+            }
+            _drawUi.clear();
+        #endif
+    }
+    if (_drawFps)
+    {
+        drawFps();
+    }
+    EndDrawing();
+    #if KAPRAYLIB_2D_ACTIVE
+        for (std::size_t i = 0; i < _cacheTexture.size(); i++)
+        {
+            __unloadTexture(_cacheTexture[i]);
+        }
+        _cacheTexture.clear();
+    #endif
+}
