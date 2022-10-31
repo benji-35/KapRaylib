@@ -146,6 +146,27 @@ namespace KapEngine
                     Sound _sound;
                 };
 
+                class ModelCache : public RaylibCache
+                {
+                  public:
+                    ModelCache(RaylibEncapsulation &e, std::string const &path);
+                    ~ModelCache() {}
+
+                    bool operator==(ModelCache const &mc) { return _path == mc.getpath(); }
+
+                    std::string getName() const override { return "Model"; }
+
+                    std::string getpath() const { return _path; }
+
+                    Model &getModel() { return _model; }
+
+                    void clear() override;
+
+                  private:
+                    std::string _path;
+                    Model _model;
+                };
+
             } // namespace Cache
 
         } // namespace Raylib

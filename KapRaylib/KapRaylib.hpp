@@ -8,13 +8,9 @@
 #ifndef KAPRAYLIB_HPP_
 #define KAPRAYLIB_HPP_
 
-#define KAPRAYLIB_VERSION_MAJOR 0
-#define KAPRAYLIB_VERSION_MINOR 100
-#define KAPRAYLIB_VERSION "0.100"
-
-#define IS_KAPRAYLIB_VERSION(x, y) (KAPRAYLIB_VERSION_MAJOR != x)? false : (KAPRAYLIB_VERSION_MINOR != y)? false : true
-#define IS_MAX_KAPRAYLIB_VERSION(x, y) (KAPRAYLIB_VERSION_MAJOR < x)? true : (KAPRAYLIB_VERSION_MAJOR > x)? false : (KAPRAYLIB_VERSION_MINOR <= y)? true : false
-#define IS_MIN_KAPRAYLIB_VERSION(x, y) (KAPRAYLIB_VERSION_MAJOR < x)? false : (KAPRAYLIB_VERSION_MAJOR > x)? true : (KAPRAYLIB_VERSION_MINOR < y)? false : true
+#ifndef KAPRAYLIB_VERSION_HPP_
+    #include "KapRaylibVersion.hpp"
+#endif
 
 #ifndef KAPRAYLIB_GRAPHICAL_HPP_
     #include "Graphical/RaylibGraphical.hpp"
@@ -26,6 +22,10 @@
 
 #ifndef KAPRAYLIB_DRAWUI_HPP_
     #include "DrawSystem/DrawUI.hpp"
+#endif
+
+#ifndef KAPRAYLIB_DRAW3D_HPP_
+    #include "DrawSystem/Draw3D.hpp"
 #endif
 
 #ifndef KAPRAYLIB_CACHE_HPP_

@@ -70,3 +70,18 @@ void KapEngine::Graphical::Raylib::Cache::SoundCache::clear() {
     _path = "";
     encap.__unloadSound(_sound);
 }
+
+KapEngine::Graphical::Raylib::Cache::ModelCache::ModelCache(RaylibEncapsulation &e, std::string const& path) : RaylibCache(e), _path(path) {
+    if (_path != "") {
+        _model = encap.__loadModel(_path);
+        DEBUG_LOG("[RAYLIB CACHE] Load new model");
+    }
+}
+
+void KapEngine::Graphical::Raylib::Cache::ModelCache::clear() {
+    if (_path == "")
+        return;
+    DEBUG_LOG("[RAYLIB CACHE] Clear model : " + _path);
+    _path = "";
+    encap.__unloadModel(_model);
+}

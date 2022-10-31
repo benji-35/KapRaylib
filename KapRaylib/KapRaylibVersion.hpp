@@ -1,0 +1,25 @@
+/*
+** EPITECH PROJECT, 2022
+** KapRaylib
+** File description:
+** KapRaylibVersion
+*/
+
+#ifndef KAPRAYLIB_VERSION_HPP_
+#define KAPRAYLIB_VERSION_HPP_
+
+#define KAPRAYLIB_BETA false
+#define KAPRAYLIB_3D_ACTIVE true
+#define KAPRAYLIB_2D_ACTIVE true
+#define KAPRAYLIB_SOUND_ACTIVE true
+
+#define KAPRAYLIB_VERSION_MAJOR 0
+#define KAPRAYLIB_VERSION_MINOR 100
+#define KAPRAYLIB_VERSION "0.100"
+
+#define IS_KAPRAYLIB_VERSION(x, y) (KAPRAYLIB_VERSION_MAJOR != x)? false : (KAPRAYLIB_VERSION_MINOR != y)? false : true
+#define IS_MAX_KAPRAYLIB_VERSION(x, y) (KAPRAYLIB_VERSION_MAJOR < x)? true : (KAPRAYLIB_VERSION_MAJOR > x)? false : (KAPRAYLIB_VERSION_MINOR <= y)? true : false
+#define IS_MIN_KAPRAYLIB_VERSION(x, y) (KAPRAYLIB_VERSION_MAJOR < x)? false : (KAPRAYLIB_VERSION_MAJOR > x)? true : (KAPRAYLIB_VERSION_MINOR < y)? false : true
+
+
+#endif /* !KAPRAYLIB_VERSION_HPP_ */

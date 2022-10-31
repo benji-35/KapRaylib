@@ -14,8 +14,7 @@
 #include <map>
 #include <iostream>
 
-#include "DrawSystem/DrawUI.hpp"
-#include "Cache/RaylibCache.hpp"
+#include "KapRaylib.hpp"
 
 #include "KapEngine.hpp"
 
@@ -132,28 +131,35 @@ namespace KapEngine
                     canDraw = false;
                     if (camSet)
                     {
-                        BeginMode3D(_camera);
-                        // draw 3D elements
-                        EndMode3D();
+                        #if KAPRAYLIB_3D_ACTIVE
+                            #if KAPRAYLIB_BETA
+                            BeginMode3D(_camera);
+                            // draw 3D elements
+                            EndMode3D();
+                            #endif
+                        #endif
+                        #if KAPRAYLIB_2D_ACTIVE
+                            for (std::size_t i = 0; i < _drawUi.size(); i++)
+                            {
+                                _drawUi[i]->draw();
+                                _drawUi[i]->clear();
+                            }
 
-                        for (std::size_t i = 0; i < _drawUi.size(); i++)
-                        {
-                            _drawUi[i]->draw();
-                            _drawUi[i]->clear();
-                        }
-
-                        _drawUi.clear();
+                            _drawUi.clear();
+                        #endif
                     }
                     if (_drawFps)
                     {
                         drawFps();
                     }
                     EndDrawing();
-                    for (std::size_t i = 0; i < _cacheTexture.size(); i++)
-                    {
-                        __unloadTexture(_cacheTexture[i]);
-                    }
-                    _cacheTexture.clear();
+                    #if KAPRAYLIB_2D_ACTIVE
+                        for (std::size_t i = 0; i < _cacheTexture.size(); i++)
+                        {
+                            __unloadTexture(_cacheTexture[i]);
+                        }
+                        _cacheTexture.clear();
+                    #endif
                 }
 
                 void setVisibleFps(bool b) { _drawFps = b; }
@@ -222,185 +228,182 @@ namespace KapEngine
 
                 Vector2 getMousePosition() const { return GetMousePosition(); }
 
-                /**
-                 * @brief image actions
-                 *
-                 */
+                #if KAPRAYLIB_2D_ACTIVE
 
-                void __setImageRedef(Image *img, Vector2 size, Rectangle crop)
-                {
-                    ImageCrop(img, crop);
-                    if (size.x < 0)
+                    void unloadFont(std::string const &fontPath);
+
+                    void unloadAllFonts();
+
+                    void __unloadFont(Font const &font) { UnloadFont(font); }
+
+                    void __unloadImage(Image const &img) { UnloadImage(img); }
+
+                    void __unloadTexture(Texture2D const &texture) { UnloadTexture(texture); }
+
+                    void loadFont(std::string const &fontPath);
+                    void loadImage(std::string const &imagePath);
+
+                    Font &getFont(std::string const &fontPath, bool alreadyTry = false);
+                    Image &getImage(std::string const &imagePath, bool alreadyTry = false);
+
+                    Image __loadImage(std::string const &imagePath) { return LoadImage(imagePath.c_str()); }
+                    Font __loadFont(std::string const &fontPath) { return LoadFont(fontPath.c_str()); }
+                    Texture2D __getTextureFromImage(Image const &img) { return LoadTextureFromImage(img); }
+
+                    /**
+                     * @brief Draw part
+                     *
+                     */
+
+                    void drawRectangle(float posX, float posY, float width, float heigth, Color color)
                     {
-                        ImageFlipVertical(img);
-                        size.x *= -1.f;
+                        auto sprite = std::make_shared<Draw::DrawSpriteColor>(*this, posX, posY, width, heigth, color);
+                        _drawUi.push_back(sprite);
                     }
-                    if (size.y < 0)
+
+                    void __drawRectangle(float posX, float posY, float width, float hiegth, Color color)
                     {
-                        ImageFlipHorizontal(img);
-                        size.y *= -1.f;
+                        DrawRectangle(posX, posY, width, hiegth, color);
                     }
-                    ImageResize(img, size.x, size.y);
-                }
 
-                /**
-                 * @brief Play music and sound
-                 *
-                 */
-
-                void playMusic(std::string const &music);
-                void playSound(std::string const &sound, float volume = 1.f);
-
-                void updateMusic()
-                {
-                    if (_musicPlaying == "")
-                        return;
-                    UpdateMusicStream(getMusic(_musicPlaying));
-                }
-                void setMusicVolume(float f)
-                {
-                    if (_musicPlaying == "")
-                        return;
-                    SetMusicVolume(getMusic(_musicPlaying), f);
-                }
-                void stopMusic()
-                {
-                    if (_musicPlaying == "")
-                        return;
-                    StopMusicStream(getMusic(_musicPlaying));
-                }
-                void pauseMusic()
-                {
-                    if (_musicPlaying == "")
-                        return;
-                    PauseMusicStream(getMusic(_musicPlaying));
-                }
-                void resumeMusic()
-                {
-                    if (_musicPlaying == "")
-                        return;
-                    ResumeMusicStream(getMusic(_musicPlaying));
-                }
-                void restartMusic()
-                {
-                    stopMusic();
-                    startMusic();
-                }
-
-                void startMusic()
-                {
-                    if (_musicPlaying == "")
-                        return;
-                    PlayMusicStream(getMusic(_musicPlaying));
-                }
-
-                /**
-                 * @brief unload part
-                 *
-                 */
-
-                void unloadFont(std::string const &fontPath);
-
-                void unloadAllFonts();
-
-                void __unloadFont(Font const &font) { UnloadFont(font); }
-
-                void __unloadImage(Image const &img) { UnloadImage(img); }
-
-                void __unloadTexture(Texture2D const &texture) { UnloadTexture(texture); }
-
-                void __unloadMusic(Music const &music) { UnloadMusicStream(music); }
-
-                void __unloadSound(Sound const &sound) { UnloadSound(sound); }
-
-                /**
-                 * @brief load part
-                 *
-                 */
-
-                void loadFont(std::string const &fontPath);
-                void loadImage(std::string const &imagePath);
-                void loadMusic(std::string const &musicPath);
-                void loadSound(std::string const &soundPath);
-
-                Font &getFont(std::string const &fontPath, bool alreadyTry = false);
-                Image &getImage(std::string const &imagePath, bool alreadyTry = false);
-                Music &getMusic(std::string const &musicPath, bool alreadyTry = false);
-                Sound &getSound(std::string const &musicPath, bool alreadyTry = false);
-
-                Image __loadImage(std::string const &imagePath) { return LoadImage(imagePath.c_str()); }
-                Font __loadFont(std::string const &fontPath) { return LoadFont(fontPath.c_str()); }
-                Texture2D __getTextureFromImage(Image const &img) { return LoadTextureFromImage(img); }
-                Music __loadMusic(std::string const &music) { return LoadMusicStream(music.c_str()); }
-                Sound __loadSound(std::string const &sound) { return LoadSound(sound.c_str()); }
-
-                /**
-                 * @brief Draw part
-                 *
-                 */
-
-                void drawRectangle(float posX, float posY, float width, float heigth, Color color)
-                {
-                    auto sprite = std::make_shared<Draw::DrawSpriteColor>(*this, posX, posY, width, heigth, color);
-                    _drawUi.push_back(sprite);
-                }
-
-                void __drawRectangle(float posX, float posY, float width, float hiegth, Color color)
-                {
-                    DrawRectangle(posX, posY, width, hiegth, color);
-                }
-
-                void drawText(std::string const &fontPath, std::string const &text, Vector2 pos, float fontSize, float spacing, Color col)
-                {
-                    auto txt = std::make_shared<Draw::DrawText>(*this);
-
-                    txt->setColor(col);
-                    txt->setPos(pos);
-                    txt->setSize(fontSize);
-                    txt->setSpacing(spacing);
-                    txt->setText(text);
-                    if (fontPath != "")
+                    void drawText(std::string const &fontPath, std::string const &text, Vector2 pos, float fontSize, float spacing, Color col)
                     {
-                        try
+                        auto txt = std::make_shared<Draw::DrawText>(*this);
+
+                        txt->setColor(col);
+                        txt->setPos(pos);
+                        txt->setSize(fontSize);
+                        txt->setSpacing(spacing);
+                        txt->setText(text);
+                        if (fontPath != "")
                         {
-                            txt->setFont(getFont(fontPath));
+                            try
+                            {
+                                txt->setFont(getFont(fontPath));
+                            }
+                            catch (...)
+                            {
+                            }
                         }
-                        catch (...)
-                        {
-                        }
+
+                        _drawUi.push_back(txt);
                     }
 
-                    _drawUi.push_back(txt);
-                }
+                    void __drawText(Font font, std::string const &text, Vector2 pos, float fontSize, float spacing, Color col)
+                    {
+                        DrawTextEx(font, text.c_str(), pos, fontSize, spacing, col);
+                    }
 
-                void __drawText(Font font, std::string const &text, Vector2 pos, float fontSize, float spacing, Color col)
-                {
-                    DrawTextEx(font, text.c_str(), pos, fontSize, spacing, col);
-                }
+                    void __drawText(std::string const &text, Vector2 pos, float fontSize, float spacing, Color col)
+                    {
+                        DrawText(text.c_str(), pos.x, pos.y, fontSize, col);
+                    }
 
-                void __drawText(std::string const &text, Vector2 pos, float fontSize, float spacing, Color col)
-                {
-                    DrawText(text.c_str(), pos.x, pos.y, fontSize, col);
-                }
+                    void drawTexture(std::string const &path, float posX, float posY, float width, float heigth, float rot, Rectangle rect,
+                                    Color col)
+                    {
+                        auto texture = std::make_shared<Draw::DrawSpriteTexture>(*this);
+                        texture->setPathTexture(path);
+                        texture->setHeigth(heigth);
+                        texture->setWidth(width);
+                        texture->setPosX(posX);
+                        texture->setPosY(posY);
+                        texture->setColor(col);
+                        texture->setRectangle(rect);
+                        texture->setRot(rot);
 
-                void drawTexture(std::string const &path, float posX, float posY, float width, float heigth, float rot, Rectangle rect,
-                                 Color col)
-                {
-                    auto texture = std::make_shared<Draw::DrawSpriteTexture>(*this);
-                    texture->setPathTexture(path);
-                    texture->setHeigth(heigth);
-                    texture->setWidth(width);
-                    texture->setPosX(posX);
-                    texture->setPosY(posY);
-                    texture->setColor(col);
-                    texture->setRectangle(rect);
-                    texture->setRot(rot);
+                        _drawUi.push_back(texture);
+                    }
 
-                    _drawUi.push_back(texture);
-                }
+                    void __drawTexture(std::string const &imagePath, float posX, float posY, float width, float heigth, Rectangle rect,
+                                    float rot, Color col);
 
-                void __drawTexture(std::string const &imagePath, float posX, float posY, float width, float heigth, Rectangle rect,
-                                   float rot, Color col);
+                #endif
+
+                #if KAPRAYLIB_SOUND_ACTIVE
+                    void playMusic(std::string const &music);
+                    void playSound(std::string const &sound, float volume = 1.f);
+
+                    void updateMusic()
+                    {
+                        if (_musicPlaying == "")
+                            return;
+                        UpdateMusicStream(getMusic(_musicPlaying));
+                    }
+                    void setMusicVolume(float f)
+                    {
+                        if (_musicPlaying == "")
+                            return;
+                        SetMusicVolume(getMusic(_musicPlaying), f);
+                    }
+                    void stopMusic()
+                    {
+                        if (_musicPlaying == "")
+                            return;
+                        StopMusicStream(getMusic(_musicPlaying));
+                    }
+                    void pauseMusic()
+                    {
+                        if (_musicPlaying == "")
+                            return;
+                        PauseMusicStream(getMusic(_musicPlaying));
+                    }
+                    void resumeMusic()
+                    {
+                        if (_musicPlaying == "")
+                            return;
+                        ResumeMusicStream(getMusic(_musicPlaying));
+                    }
+                    void restartMusic()
+                    {
+                        stopMusic();
+                        startMusic();
+                    }
+
+                    void startMusic()
+                    {
+                        if (_musicPlaying == "")
+                            return;
+                        PlayMusicStream(getMusic(_musicPlaying));
+                    }
+
+
+                    void __unloadMusic(Music const &music) { UnloadMusicStream(music); }
+
+                    void __unloadSound(Sound const &sound) { UnloadSound(sound); }
+
+                    void loadMusic(std::string const &musicPath);
+                    void loadSound(std::string const &soundPath);
+                    Music &getMusic(std::string const &musicPath, bool alreadyTry = false);
+                    Sound &getSound(std::string const &musicPath, bool alreadyTry = false);
+
+                    Music __loadMusic(std::string const &music) { return LoadMusicStream(music.c_str()); }
+                    Sound __loadSound(std::string const &sound) { return LoadSound(sound.c_str()); }
+
+                #endif
+
+                #if KAPRAYLIB_3D_ACTIVE
+                    #if KAPRAYLIB_BETA
+
+                        void __unloadModel(Model const &model) { UnloadModel(model); }
+
+                        Model &getModel(std::string const &modelPath, bool alreadyTry = false);
+
+                        Model __loadModel(std::string const &model) { return LoadModel(model.c_str()); }
+
+                        void drawModel(std::string const &modelPath, Vector3 pos, float scale, Color col)
+                        {
+                            auto model = std::make_shared<Draw::DrawModel>(*this);
+                            model->setPathModel(modelPath);
+                            model->setPos(pos);
+                            model->setScale(scale);
+                            model->setColor(col);
+
+                            _drawUi.push_back(model);
+                        }
+
+                    #endif
+                #endif
 
                 /**
                  * @brief Input part
@@ -460,11 +463,25 @@ namespace KapEngine
                 bool _firstRun = true;
 
                 // cache
-                std::string _musicPlaying = "";
+                #if KAPRAYLIB_SOUND_ACTIVE
+                    std::string _musicPlaying = "";
+                #endif
+    
                 std::vector<std::shared_ptr<Cache::RaylibCache>> _cache;
-                std::vector<Texture2D> _cacheTexture;
 
-                std::vector<std::shared_ptr<Draw::RaylibDrawing>> _drawUi;
+                #if KAPRAYLIB_2D_ACTIVE
+                    std::vector<Texture2D> _cacheTexture;
+    
+                    std::vector<std::shared_ptr<Draw::RaylibDrawing>> _drawUi;
+                #endif
+
+                #if KAPRAYLIB_3D_ACTIVE
+                    #if KAPRAYLIB_BETA
+
+                    std::vector<std::shared_ptr<Draw::Draw3D>> _drawModel;
+
+                    #endif
+                #endif
             };
 
         } // namespace Raylib
