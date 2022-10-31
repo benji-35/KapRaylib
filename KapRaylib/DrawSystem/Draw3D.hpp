@@ -9,7 +9,7 @@
 #define KAPRAYLIB_DRAW3D_HPP_
 
 #include "raylib.h"
-#include "KapRaylibVersion.hpp"
+#include "KapRaylib/KapRaylibVersion.hpp"
 #include <string>
 
 #if KAPRAYLIB_3D_ACTIVE

@@ -14,7 +14,7 @@
 #include <map>
 #include <iostream>
 
-#include "KapRaylib.hpp"
+#include "KapRaylib/KapRaylib.hpp"
 
 #include "KapEngine.hpp"
 

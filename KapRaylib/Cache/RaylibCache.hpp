@@ -9,6 +9,7 @@
 #define KAPRAYLIB_CACHE_HPP_
 
 #include "raylib.h"
+#include "KapRaylib/KapRaylibVersion.hpp"
 #include <string>
 
 namespace KapEngine

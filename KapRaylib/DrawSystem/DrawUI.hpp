@@ -10,7 +10,7 @@
 
 #include "raylib.h"
 #include <string>
-#include "KapRaylibVersion.hpp"
+#include "KapRaylib/KapRaylibVersion.hpp"
 
 #if KAPRAYLIB_2D_ACTIVE
 

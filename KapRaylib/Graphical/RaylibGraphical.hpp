@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include "KapRaylib.hpp"
+#include "KapRaylib/KapRaylib.hpp"
 
 #include "KapEngine.hpp"
 #include "KapEngineEvents.hpp"
