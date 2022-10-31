@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include "Encapsulation/RaylibEncapsulation.hpp"
+#include "KapRaylib.hpp"
 
 #include "KapEngine.hpp"
 #include "KapEngineEvents.hpp"
@@ -39,13 +39,17 @@ namespace KapEngine
                 void display() override;
                 void getEvents() override;
 
-                void playSound(std::string const &soundPath) override;
-                void playMusic(std::string const &musicPath, float volume = 1.0f) override;
-                void stopMusic() override;
-                void pauseMusic() override;
-                void resumMusic() override;
-                void restartMusic() override;
-                void setMusicVolume(float volume) override;
+                #if KAPRAYLIB_SOUND_ACTIVE
+
+                  void playSound(std::string const &soundPath) override;
+                  void playMusic(std::string const &musicPath, float volume = 1.0f) override;
+                  void stopMusic() override;
+                  void pauseMusic() override;
+                  void resumMusic() override;
+                  void restartMusic() override;
+                  void setMusicVolume(float volume) override;
+
+                #endif
 
                 float getJoystikValue(int gamepadId, int joystickId) override;
 

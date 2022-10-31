@@ -8,6 +8,8 @@
 #include "DrawUI.hpp"
 #include "Encapsulation/RaylibEncapsulation.hpp"
 
+#if KAPRAYLIB_2D_ACTIVE
+
 void KapEngine::Graphical::Raylib::Draw::DrawSpriteColor::draw() {
     _encap.__drawRectangle(_posX, _posY, _width, _heigth, _color);
 }
@@ -23,3 +25,5 @@ void KapEngine::Graphical::Raylib::Draw::DrawText::draw() {
 void KapEngine::Graphical::Raylib::Draw::DrawSpriteTexture::draw() {
     _encap.__drawTexture(_path, _posX, _posY, _width, _heigth, _rect, _rot, _color);
 }
+
+#endif

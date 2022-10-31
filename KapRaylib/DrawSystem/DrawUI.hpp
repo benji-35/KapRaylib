@@ -10,6 +10,9 @@
 
 #include "raylib.h"
 #include <string>
+#include "KapRaylibVersion.hpp"
+
+#if KAPRAYLIB_2D_ACTIVE
 
 namespace KapEngine
 {
@@ -210,5 +213,7 @@ namespace KapEngine
     } // namespace Graphical
 
 } // namespace KapEngine
+
+#endif
 
 #endif /* !KAPRAYLIB_DRAWUI_HPP_ */

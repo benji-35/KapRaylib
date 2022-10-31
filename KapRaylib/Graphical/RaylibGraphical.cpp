@@ -23,56 +23,60 @@ KapEngine::Graphical::Raylib::RaylibGraphical::RaylibGraphical(GraphicalLibManag
         manager.getEngine().getMaxFps()
     );
 
-    setDrawImage([this](UI::Image &img) {
-        if (!_drawWindow)
-            return;
-        if (img.isUsingSprite()) {
-            auto& tr = img.getGameObject().getComponent<Transform>();
-            Tools::Vector2 pos = img.getCalculatedPosition();
-            Tools::Vector2 scale = img.getCalculatedScale();
-            if (!drawable(pos, scale))
+    #if KAPRAYLIB_2D_ACTIVE
+
+        setDrawImage([this](UI::Image &img) {
+            if (!_drawWindow)
                 return;
+            if (img.isUsingSprite()) {
+                auto& tr = img.getGameObject().getComponent<Transform>();
+                Tools::Vector2 pos = img.getCalculatedPosition();
+                Tools::Vector2 scale = img.getCalculatedScale();
+                if (!drawable(pos, scale))
+                    return;
 
-            Tools::Color color = img.getColorSprite();
+                Tools::Color color = img.getColorSprite();
 
 
-            this->raylib->drawTexture(KAPENGINE_PREFIX_ASSETS_PATH + img.getPathSprite(), pos.getX(), pos.getY(), scale.getX(), scale.getY(), tr.getWorldRotation().getX(),
-                engineToRaylib(img.getRectangle()), engineToRaylib(color));
-        } else {
-            Tools::Vector2 pos = img.getCalculatedPosition();
-            Tools::Vector2 scale = img.getCalculatedScale();
-            if (!drawable(pos, scale))
-                return;
-            Tools::Color color = img.getColorSprite();
-            this->raylib->drawRectangle(pos.getX(), pos.getY(), scale.getX(), scale.getY(), engineToRaylib(color));
-        }
-    });
-
-    setDrawText([this](UI::Text &txt){
-        if (!_drawWindow)
-            return;
-        Tools::Vector2 posTr = txt.getCalculatedPos();
-        float scale = txt.getPoliceSize();
-
-        try {
-            auto idParent = txt.getTransform().getParentContainsComponent("Canvas");
-            auto parent = txt.getGameObject().getScene().getObject(idParent);
-
-            auto &canvas = parent->getComponent<UI::Canvas>();
-            auto compare = canvas.getScreenSizeCompare();
-            auto cSize = txt.getGameObject().getEngine().getCurrentGraphicalLib()->getScreenSize();
-
-            if (canvas.getResizeType() == UI::Canvas::RESIZE_WITH_SCREEN) {
-                scale = (cSize.getX() * scale) / compare.getX();
+                this->raylib->drawTexture(KAPENGINE_PREFIX_ASSETS_PATH + img.getPathSprite(), pos.getX(), pos.getY(), scale.getX(), scale.getY(), tr.getWorldRotation().getX(),
+                    engineToRaylib(img.getRectangle()), engineToRaylib(color));
+            } else {
+                Tools::Vector2 pos = img.getCalculatedPosition();
+                Tools::Vector2 scale = img.getCalculatedScale();
+                if (!drawable(pos, scale))
+                    return;
+                Tools::Color color = img.getColorSprite();
+                this->raylib->drawRectangle(pos.getX(), pos.getY(), scale.getX(), scale.getY(), engineToRaylib(color));
             }
-        } catch(...) {
-            DEBUG_ERROR("Failed to get canvas of text");
-        }
+        });
 
-        Vector2 pos = engineToRaylib(posTr);
+        setDrawText([this](UI::Text &txt){
+            if (!_drawWindow)
+                return;
+            Tools::Vector2 posTr = txt.getCalculatedPos();
+            float scale = txt.getPoliceSize();
 
-        this->raylib->drawText(KAPENGINE_PREFIX_ASSETS_PATH + txt.getFontPath(), txt.getText(), pos, scale, txt.getSpace(), engineToRaylib(txt.getColor()));
-    });
+            try {
+                auto idParent = txt.getTransform().getParentContainsComponent("Canvas");
+                auto parent = txt.getGameObject().getScene().getObject(idParent);
+
+                auto &canvas = parent->getComponent<UI::Canvas>();
+                auto compare = canvas.getScreenSizeCompare();
+                auto cSize = txt.getGameObject().getEngine().getCurrentGraphicalLib()->getScreenSize();
+
+                if (canvas.getResizeType() == UI::Canvas::RESIZE_WITH_SCREEN) {
+                    scale = (cSize.getX() * scale) / compare.getX();
+                }
+            } catch(...) {
+                DEBUG_ERROR("Failed to get canvas of text");
+            }
+
+            Vector2 pos = engineToRaylib(posTr);
+
+            this->raylib->drawText(KAPENGINE_PREFIX_ASSETS_PATH + txt.getFontPath(), txt.getText(), pos, scale, txt.getSpace(), engineToRaylib(txt.getColor()));
+        });
+
+    #endif
 
 }
 
@@ -525,31 +529,35 @@ bool KapEngine::Graphical::Raylib::RaylibGraphical::drawable(Tools::Vector2 cons
     return true;
 }
 
-void KapEngine::Graphical::Raylib::RaylibGraphical::playSound(std::string const& path) {
-    raylib->playSound(KAPENGINE_PREFIX_ASSETS_PATH + path, _soundVolume);
-}
+#if KAPRAYLIB_SOUND_ACTIVE
 
-void KapEngine::Graphical::Raylib::RaylibGraphical::playMusic(std::string const& path, float vol) {
-    raylib->playMusic(KAPENGINE_PREFIX_ASSETS_PATH + path);
-    raylib->setMusicVolume(vol);
-}
+    void KapEngine::Graphical::Raylib::RaylibGraphical::playSound(std::string const& path) {
+        raylib->playSound(KAPENGINE_PREFIX_ASSETS_PATH + path, _soundVolume);
+    }
 
-void KapEngine::Graphical::Raylib::RaylibGraphical::stopMusic() {
-    raylib->stopMusic();
-}
+    void KapEngine::Graphical::Raylib::RaylibGraphical::playMusic(std::string const& path, float vol) {
+        raylib->playMusic(KAPENGINE_PREFIX_ASSETS_PATH + path);
+        raylib->setMusicVolume(vol);
+    }
 
-void KapEngine::Graphical::Raylib::RaylibGraphical::pauseMusic() {
-    raylib->pauseMusic();
-}
+    void KapEngine::Graphical::Raylib::RaylibGraphical::stopMusic() {
+        raylib->stopMusic();
+    }
 
-void KapEngine::Graphical::Raylib::RaylibGraphical::resumMusic() {
-    raylib->resumeMusic();
-}
+    void KapEngine::Graphical::Raylib::RaylibGraphical::pauseMusic() {
+        raylib->pauseMusic();
+    }
 
-void KapEngine::Graphical::Raylib::RaylibGraphical::restartMusic() {
-    raylib->restartMusic();
-}
+    void KapEngine::Graphical::Raylib::RaylibGraphical::resumMusic() {
+        raylib->resumeMusic();
+    }
 
-void KapEngine::Graphical::Raylib::RaylibGraphical::setMusicVolume(float vol) {
-    raylib->setMusicVolume(vol);
-}
+    void KapEngine::Graphical::Raylib::RaylibGraphical::restartMusic() {
+        raylib->restartMusic();
+    }
+
+    void KapEngine::Graphical::Raylib::RaylibGraphical::setMusicVolume(float vol) {
+        raylib->setMusicVolume(vol);
+    }
+
+#endif
