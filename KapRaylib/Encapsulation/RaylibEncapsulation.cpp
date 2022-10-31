@@ -61,7 +61,7 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
     Font &KapEngine::Graphical::Raylib::RaylibEncapsulation::getFont(std::string const& path, bool alreadyTry) {
         for (std::size_t i = 0; i < _cache.size(); i++) {
             if (_cache[i]->getName() == "Font") {
-                auto fcache = (Cache::FontCache &)*_cache[i];
+                auto &fcache = (Cache::FontCache &)*_cache[i];
                 if (fcache.getpath() == path) {
                     //font found
                     return fcache.getFont();
