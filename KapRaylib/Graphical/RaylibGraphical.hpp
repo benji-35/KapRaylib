@@ -10,6 +10,8 @@
 
 #include <memory>
 
+#include "raylib.h"
+
 #include "KapRaylib/KapRaylib.hpp"
 
 #include "KapEngine.hpp"
