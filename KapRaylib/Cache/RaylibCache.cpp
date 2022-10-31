@@ -6,7 +6,7 @@
 */
 
 #include "RaylibCache.hpp"
-#include "Encapsulation/RaylibEncapsulation.hpp"
+#include "KapRaylib/Encapsulation/RaylibEncapsulation.hpp"
 #include <iostream>
 #include "KapEngineDebug.hpp"
 

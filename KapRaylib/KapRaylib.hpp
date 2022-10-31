@@ -12,6 +12,44 @@
     #include "KapRaylibVersion.hpp"
 #endif
 
+
+namespace KapEngine {
+    namespace Graphical {
+        namespace Raylib {
+            class RaylibGraphical;
+            class RaylibEncapsulation;
+
+            namespace Draw {
+                #if KAPRAYLIB_2D_ACTIVE
+                    class DrawUI;
+                #endif
+                #if KAPRAYLIB_3D_ACTIVE
+                    #if KAPRAYLIB_BETA
+                        class Draw3D;
+                    #endif
+                #endif
+            }
+
+            namespace Cache {
+                class RaylibCache;
+                #if KAPRAYLIB_2D_ACTIVE
+                    class ImageCache;
+                    class FontCache;
+                #endif
+                #if KAPRAYLIB_SOUND_ACTIVE
+                    class MusicCache;
+                    class SoundCache;
+                #endif
+                #if KAPRAYLIB_3D_ACTIVE
+                    #if KAPRAYLIB_BETA
+                        class ModelCache;
+                    #endif
+                #endif
+            }
+        }
+    }
+}
+
 #ifndef KAPRAYLIB_GRAPHICAL_HPP_
     #include "Graphical/RaylibGraphical.hpp"
 #endif
