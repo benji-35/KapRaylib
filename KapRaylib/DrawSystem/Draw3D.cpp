@@ -8,6 +8,12 @@
 #include "Draw3D.hpp"
 #include "KapRaylib/Encapsulation/RaylibEncapsulation.hpp"
 
-void KapEngine::Graphical::Raylib::Draw::Draw3DModel::draw() {
-    _encap.__drawModel(_model, _pos, _scale, _color);
-}
+#if KAPRAYLIB_3D_ACTIVE
+    #if KAPRAYLIB_BETA
+
+        void KapEngine::Graphical::Raylib::Draw::Draw3DModel::draw() {
+            _encap.__drawModel(_encap.getModel(_pathModel), _pos, _scale, WHITE);
+        }
+
+    #endif
+#endif
