@@ -12,22 +12,40 @@
  * @brief The beta version of KapRaylib
  * if KAPRAYLIB_BETA is defined, the version will be the beta version but that can be unstable
  */
-#define KAPRAYLIB_BETA false
+#ifndef KAPRAYLIB_BETA_OW
+    #define KAPRAYLIB_BETA false
+#else
+    #define KAPRAYLIB_BETA KAPRAYLIB_BETA_OW
+#endif
+
 /**
  * @brief active 3D drawing system
  * 
  */
-#define KAPRAYLIB_3D_ACTIVE true
+#ifndef KAPRAYLIB_3D_ACTIVE_OW
+    #define KAPRAYLIB_3D_ACTIVE true
+#else
+    #define KAPRAYLIB_3D_ACTIVE KAPRAYLIB_3D_ACTIVE_OW
+#endif
+
 /**
  * @brief active 2D drawing system
  * 
 */
-#define KAPRAYLIB_2D_ACTIVE true
+#ifndef KAPRAYLIB_2D_ACTIVE_OW
+    #define KAPRAYLIB_2D_ACTIVE true
+#else
+    #define KAPRAYLIB_2D_ACTIVE KAPRAYLIB_2D_ACTIVE_OW
+#endif
 /**
  * @brief active sound system
  * 
 */
-#define KAPRAYLIB_SOUND_ACTIVE true
+#ifndef KAPRAYLIB_SOUND_ACTIVE_OW
+    #define KAPRAYLIB_SOUND_ACTIVE true
+#else
+    #define KAPRAYLIB_SOUND_ACTIVE KAPRAYLIB_SOUND_ACTIVE_OW
+#endif
 
 /**
  * @brief The major version of KapRaylib

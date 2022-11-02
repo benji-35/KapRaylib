@@ -1,0 +1,32 @@
+
+option(KAPRAYLIB_BETA_OPT "define if we can use the beta of KapRayLib" OFF)
+option(KAPRAYLIB_3D_ACTIVE_OPT "define if we can use the 3D part of KapRayLib" ON)
+option(KAPRAYLIB_2D_ACTIVE_OPT "define if we can use the 2D part of KapRayLib" ON)
+option(KAPRAYLIB_SOUND_ACTIVE_OPT "define if we can use the sound part of KapRayLib" ON)
+
+if (${KAPRAYLIB_BETA_OPT})
+	set(KAPRAYLIB_BETA_FLAG "-DKAPRAYLIB_BETA_OW=true")
+else()
+	set(KAPRAYLIB_BETA_FLAG "-DKAPRAYLIB_BETA_OW=false")
+endif()
+
+if (${KAPRAYLIB_3D_ACTIVE_OPT})
+	set(KAPRAYLIB_3D_ACTIVE_FLAG "-DKAPRAYLIB_3D_ACTIVE_OW=true")
+else()
+	set(KAPRAYLIB_3D_ACTIVE_FLAG "-DKAPRAYLIB_3D_ACTIVE_OW=false")
+endif()
+
+if (${KAPRAYLIB_2D_ACTIVE_OPT})
+	set(KAPRAYLIB_2D_ACTIVE_FLAG "-DKAPRAYLIB_2D_ACTIVE_OW=true")
+else()
+	set(KAPRAYLIB_2D_ACTIVE_FLAG "-DKAPRAYLIB_2D_ACTIVE_OW=false")
+endif()
+
+if (${KAPRAYLIB_SOUND_ACTIVE_OPT})
+	set(KAPRAYLIB_SOUND_ACTIVE_FLAG "-DKAPRAYLIB_SOUND_ACTIVE_OW=true")
+else()
+	set(KAPRAYLIB_SOUND_ACTIVE_FLAG "-DKAPRAYLIB_SOUND_ACTIVE_OW=false")
+endif()
+
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${KAPRAYLIB_BETA_FLAG} ${KAPRAYLIB_3D_ACTIVE_FLAG} ${KAPRAYLIB_2D_ACTIVE_FLAG} ${KAPRAYLIB_SOUND_ACTIVE_FLAG}")
+include_directories(Packages/KapRaylib)
