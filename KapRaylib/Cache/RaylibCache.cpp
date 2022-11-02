@@ -16,7 +16,9 @@
         pathImage = imagePath;
         if (pathImage != "") {
             img = encap.__loadImage(pathImage);
-            DEBUG_LOG("[RAYLIB CACHE] Load new image");
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_LOG("[RAYLIB CACHE] Load new image");
+            #endif
         }
     }
 
@@ -24,21 +26,27 @@
         if (pathImage == "")
             return;
         encap.__unloadImage(img);
-        DEBUG_LOG("[RAYLIB CACHE] Clear image : " + pathImage);
+        #if KAPENGINE_DEBUG_ACTIVE
+            DEBUG_LOG("[RAYLIB CACHE] Clear image : " + pathImage);
+        #endif
         pathImage = "";
     }
 
     KapEngine::Graphical::Raylib::Cache::FontCache::FontCache(RaylibEncapsulation &e, std::string const& path) : RaylibCache(e), _path(path) {
         if (_path != "") {
             _font = encap.__loadFont(_path);
-            DEBUG_LOG("[RAYLIB CACHE] Load new font");
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_LOG("[RAYLIB CACHE] Load new font");
+            #endif
         }
     }
 
     void KapEngine::Graphical::Raylib::Cache::FontCache::clear() {
         if (_path == "")
             return;
-        DEBUG_LOG("[RAYLIB CACHE] Clear font : " + _path);
+        #if KAPENGINE_DEBUG_ACTIVE
+            DEBUG_LOG("[RAYLIB CACHE] Clear font : " + _path);
+        #endif
         _path = "";
         encap.__unloadFont(_font);
     }
@@ -50,14 +58,18 @@
     KapEngine::Graphical::Raylib::Cache::MusicCache::MusicCache(RaylibEncapsulation &e, std::string const& path) : RaylibCache(e), _path(path) {
         if (_path != "") {
             _music = encap.__loadMusic(_path);
-            DEBUG_LOG("[RAYLIB CACHE] Load new music");
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_LOG("[RAYLIB CACHE] Load new music");
+            #endif
         }
     }
 
     void KapEngine::Graphical::Raylib::Cache::MusicCache::clear() {
         if (_path == "")
             return;
-        DEBUG_LOG("[RAYLIB CACHE] Clear music : " + _path);
+        #if KAPENGINE_DEBUG_ACTIVE
+            DEBUG_LOG("[RAYLIB CACHE] Clear music : " + _path);
+        #endif
         _path = "";
         encap.__unloadMusic(_music);
     }
@@ -65,14 +77,18 @@
     KapEngine::Graphical::Raylib::Cache::SoundCache::SoundCache(RaylibEncapsulation &e, std::string const& path) : RaylibCache(e), _path(path) {
         if (_path != "") {
             _sound = encap.__loadSound(_path);
-            DEBUG_LOG("[RAYLIB CACHE] Load new sound");
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_LOG("[RAYLIB CACHE] Load new sound");
+            #endif
         }
     }
 
     void KapEngine::Graphical::Raylib::Cache::SoundCache::clear() {
         if (_path == "")
             return;
-        DEBUG_LOG("[RAYLIB CACHE] Clear sound : " + _path);
+        #if KAPENGINE_DEBUG_ACTIVE
+            DEBUG_LOG("[RAYLIB CACHE] Clear sound : " + _path);
+        #endif
         _path = "";
         encap.__unloadSound(_sound);
     }
@@ -86,14 +102,18 @@
         KapEngine::Graphical::Raylib::Cache::ModelCache::ModelCache(RaylibEncapsulation &e, std::string const& path) : RaylibCache(e), _path(path) {
             if (_path != "") {
                 _model = encap.__loadModel(_path);
-                DEBUG_LOG("[RAYLIB CACHE] Load new model");
+                #if KAPENGINE_DEBUG_ACTIVE
+                    DEBUG_LOG("[RAYLIB CACHE] Load new model");
+                #endif
             }
         }
 
         void KapEngine::Graphical::Raylib::Cache::ModelCache::clear() {
             if (_path == "")
                 return;
-            DEBUG_LOG("[RAYLIB CACHE] Clear model : " + _path);
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_LOG("[RAYLIB CACHE] Clear model : " + _path);
+            #endif
             _path = "";
             encap.__unloadModel(_model);
         }
