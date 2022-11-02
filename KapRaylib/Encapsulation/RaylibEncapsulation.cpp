@@ -85,7 +85,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
             SetTextureFilter(texture, TEXTURE_FILTER_POINT);
             DrawTexturePro(texture, rect, {posX, posY, width, heigth}, {0, 0}, rot, col);
         } catch(std::exception e) {
-            DEBUG_ERROR(e.what());
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_ERROR(e.what());
+            #endif
             return;
         }
     }
@@ -113,7 +115,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
         }
 
         if (alreadyTry) {
-            DEBUG_ERROR("[RAYLIB] : no image found: " + imagePath);
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_ERROR("[RAYLIB] : no image found: " + imagePath);
+            #endif
             throw Errors::GraphicalSystemError("No image found: " + imagePath);
         }
         loadImage(imagePath);
@@ -209,7 +213,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
         try {
             getMusic(music);
         } catch(...) {
-            DEBUG_ERROR("Music " + music + " not found / error to load");
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_ERROR("Music " + music + " not found / error to load");
+            #endif
             return;
         }
         _musicPlaying = music;
@@ -222,7 +228,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
             SetSoundVolume(s, volume);
             PlaySoundMulti(s);
         } catch(...) {
-            DEBUG_ERROR("Failed to play sound");
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_ERROR("Failed to play sound");
+            #endif
         }
     }
 
@@ -236,7 +244,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
         }
 
         if (alreadyTry) {
-            DEBUG_ERROR("[RAYLIB] : no sound found: " + imagePath);
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_ERROR("[RAYLIB] : no sound found: " + imagePath);
+            #endif
             throw Errors::GraphicalSystemError("No sound found: " + imagePath);
         }
         loadSound(imagePath);
@@ -253,7 +263,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
         }
 
         if (alreadyTry) {
-            DEBUG_ERROR("[RAYLIB] : no music found: " + imagePath);
+            #if KAPENGINE_DEBUG_ACTIVE
+                DEBUG_ERROR("[RAYLIB] : no music found: " + imagePath);
+            #endif
             throw Errors::GraphicalSystemError("No music found: " + imagePath);
         }
         loadMusic(imagePath);
