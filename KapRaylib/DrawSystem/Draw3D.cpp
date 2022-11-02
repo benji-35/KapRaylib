@@ -12,7 +12,7 @@
     #if KAPRAYLIB_BETA
 
         void KapEngine::Graphical::Raylib::Draw::Draw3DModel::draw() {
-            _encap.__drawModel(_encap.getModel(_pathModel), _pos, _scale, WHITE);
+            _encap.__drawModel(_encap.getModel(_pathModel), _pos, _scale.x, WHITE);
         }
 
     #endif

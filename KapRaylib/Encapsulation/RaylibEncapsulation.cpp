@@ -170,6 +170,29 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
 
 #endif
 
+#if KAPRAYLIB_3D_ACTIVE
+    #if KAPRAYLIB_BETA
+        Model &KapEngine::Graphical::Raylib::RaylibEncapsulation::getModel(std::string const &modelPath, bool alreadyTry) {
+            for (std::size_t i = 0; i < _cache.size(); i++) {
+                if (_cache[i]->getName() == "Model") {
+                    auto img = (Cache::ModelCache *)_cache[i].get();
+                    if (img->getPath() == modelPath)
+                        return img->getModel();
+                }
+            }
+
+            if (alreadyTry) {
+                #if KAPENGINE_DEBUG_ACTIVE
+                    DEBUG_ERROR("[RAYLIB] : no image found: " + modelPath);
+                #endif
+                throw Errors::GraphicalSystemError("No image found: " + modelPath);
+            }
+            loadImage(modelPath);
+            return getModel(modelPath, true);
+        }
+    #endif
+#endif
+
 #if KAPRAYLIB_SOUND_ACTIVE
 
     void KapEngine::Graphical::Raylib::RaylibEncapsulation::loadMusic(std::string const& path) {

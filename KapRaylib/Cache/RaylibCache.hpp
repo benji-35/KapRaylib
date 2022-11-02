@@ -161,11 +161,11 @@ namespace KapEngine
                                 ModelCache(RaylibEncapsulation &e, std::string const &path);
                                 ~ModelCache() {}
 
-                                bool operator==(ModelCache const &mc) { return _path == mc.getpath(); }
+                                bool operator==(ModelCache const &mc) { return _path == mc.getPath(); }
 
                                 std::string getName() const override { return "Model"; }
 
-                                std::string getpath() const { return _path; }
+                                std::string getPath() const { return _path; }
 
                                 Model &getModel() { return _model; }
 
