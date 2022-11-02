@@ -14,7 +14,11 @@
 #include <map>
 #include <iostream>
 
-#include "KapRaylib/KapRaylib.hpp"
+#include "KapRaylib/KapRaylibVersion.hpp"
+#include "KapRaylib/Graphical/RaylibGraphical.hpp"
+#include "KapRaylib/Cache/RaylibCache.hpp"
+#include "KapRaylib/DrawSystem/Draw3D.hpp"
+#include "KapRaylib/DrawSystem/DrawUI.hpp"
 
 #include "KapEngine.hpp"
 
@@ -295,13 +299,11 @@ namespace KapEngine
 
                         void drawModel(std::string const &modelPath, Vector3 pos, float scale, Color col)
                         {
-                            auto model = std::make_shared<Draw::DrawModel>(*this);
-                            model->setPathModel(modelPath);
+                            auto model = std::make_shared<Draw::Draw3DModel>(*this, modelPath);
                             model->setPos(pos);
-                            model->setScale(scale);
-                            model->setColor(col);
+                            model->setScale({scale, 0.f, 0.f});
 
-                            _drawUi.push_back(model);
+                            _drawModel.push_back(model);
                         }
 
                     #endif

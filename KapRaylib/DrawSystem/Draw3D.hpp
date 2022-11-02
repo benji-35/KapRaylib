@@ -38,7 +38,7 @@ namespace KapEngine {
 
                 class IDraw3D {
                     public:
-                        virtual ~DrawUI() {}
+                        virtual ~IDraw3D() {}
 
                         virtual void draw() = 0;
                         virtual void clear() = 0;
@@ -59,12 +59,12 @@ namespace KapEngine {
                         RaylibEncapsulation &_encap;
                 };
 
-                class DrawModel : public Draw3D {
+                class Draw3DModel : public Draw3D {
                     public:
-                        DrawModel(RaylibEncapsulation &encapsulation, std::string const& pathModel) : Draw3D(encapsulation) {
+                        Draw3DModel(RaylibEncapsulation &encapsulation, std::string const& pathModel) : Draw3D(encapsulation) {
                             _pathModel = pathModel;
                         }
-                        ~DrawModel() {}
+                        ~Draw3DModel() {}
 
                         void setScale(Vector3 scale) {
                             _scale = scale;
@@ -78,9 +78,7 @@ namespace KapEngine {
                             _rotation = rotation;
                         }
 
-                        virtual void draw() override {
-                            _encap.__drawModel(_encap.getModel(_pathModel), _pos, _scale, _rotation);
-                        }
+                        virtual void draw() override;
 
                     protected:
                     private:

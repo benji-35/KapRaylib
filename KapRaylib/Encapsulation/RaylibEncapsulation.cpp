@@ -290,7 +290,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::stopDrawing() {
         #if KAPRAYLIB_3D_ACTIVE
             #if KAPRAYLIB_BETA
             BeginMode3D(_camera);
-            // draw 3D elements
+            for (std::size_t i = 0; i < _drawModel.size(); i++) {
+                _drawModel[i]->draw();
+            }
             EndMode3D();
             #endif
         #endif
