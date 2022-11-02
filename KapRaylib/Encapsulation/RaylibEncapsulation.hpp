@@ -306,6 +306,11 @@ namespace KapEngine
                             _drawModel.push_back(model);
                         }
 
+                        void __drawModel(Model const &model, Vector3 pos, float scale, Color col)
+                        {
+                            DrawModel(model, pos, scale, col);
+                        }
+
                     #endif
                 #endif
 
