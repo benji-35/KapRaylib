@@ -76,7 +76,9 @@ namespace KapEngine
                     stopCam();
                     clearCache();
                     opened = false;
-                    std::cout << "Clearing RAYLIB" << std::endl;
+                    #if KAPENGINE_DEBUG_ACTIVE
+                        DEBUG_WARNING("[KAP RAYLIB] Clearing RAYLIB ! " + _path);
+                    #endif
                 }
 
                 bool windownShouldClose() { return WindowShouldClose(); }

@@ -15,7 +15,9 @@ void KapEngine::Graphical::Raylib::RaylibEncapsulation::clearCache() {
         _cache[i]->clear();
     }
     _cache.clear();
-    std::cout << "Cache cleared !" << std::endl;
+    #if KAPENGINE_DEBUG_ACTIVE
+        DEBUG_WARNING("[KAP RAYLIB] Cache cleared ! " + _path);
+    #endif
 }
 
 #if KAPRAYLIB_2D_ACTIVE
