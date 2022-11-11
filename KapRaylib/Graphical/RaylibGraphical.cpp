@@ -69,7 +69,7 @@ KapEngine::Graphical::Raylib::RaylibGraphical::RaylibGraphical(GraphicalLibManag
                     scale = (cSize.getX() * scale) / compare.getX();
                 }
             } catch(...) {
-                DEBUG_ERROR("Failed to get canvas of text");
+                DEBUG_ERROR("Failed to get canvas of text '" + txt.getName() + "'");
             }
 
             Vector2 pos = engineToRaylib(posTr);
