@@ -59,11 +59,11 @@ KapEngine::Graphical::Raylib::RaylibGraphical::RaylibGraphical(GraphicalLibManag
 
             try {
                 auto idParent = txt.getTransform().getParentContainsComponent("Canvas");
-                auto parent = txt.getGameObject().getScene().getObject(idParent);
+                auto parent = txt.getScene().getObject(idParent);
 
                 auto &canvas = parent->getComponent<UI::Canvas>();
                 auto compare = canvas.getScreenSizeCompare();
-                auto cSize = txt.getGameObject().getEngine().getCurrentGraphicalLib()->getScreenSize();
+                auto cSize = txt.getEngine().getCurrentGraphicalLib()->getScreenSize();
 
                 if (canvas.getResizeType() == UI::Canvas::RESIZE_WITH_SCREEN) {
                     scale = (cSize.getX() * scale) / compare.getX();
